@@ -2,12 +2,41 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: demoapp
-  namespace: arc-k8s-demo
+  name: mongo-service
+  namespace: crud-app-bitcoin
 spec:
-  type: LoadBalancer
+  ports:
+    - name: mongo
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
   selector:
-    app: demoapp
+    app: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+  namespace: crud-app-bitcoin
+spec:
+  selector:
+    app: mongo-express
+  # type: LoadBalancer
+  ports:
+    - name: mongo-express
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoin-service
+  namespace: crud-app-bitcoin
+spec:
+  selector:
+    app: bitcoin
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 80
