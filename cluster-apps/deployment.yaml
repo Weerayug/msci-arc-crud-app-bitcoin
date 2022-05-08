@@ -2,51 +2,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bitcoin
-  namespace: crud-app-bitcoin
+    name: bitcoin
+    namespace: crud-app-bitcoin
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: bitcoin
-  template:
-    metadata:
-      labels:
+    replicas: 5
+    selector:
+      matchLabels:
         app: bitcoin
-    spec:
-     containers:
-     - name: bitcoin
-       image: unnamed22090/bitcoin_api
-       ports:
-       - containerPort: 80
-       resources:
-         requests:
-            cpu: 128m
-            memory: 512Mi
-         limits:
-            cpu: 256m
-            memory: 1G
-         env:
-         - name: TZ
-           value: "Asia/Bangkok"
----
+    template:
+      metadata:
+        labels:
+          app: bitcoin
+      spec:
+        containers:
+          - name: bitcoin
+            image: unnamed22090/bitcoin_api
+            ports:
+              - containerPort: 80
+            resources:
+              requests:
+                cpu: 256m
+                memory: 512Mi
+              limits:
+                cpu: 512m
+                memory: 1G
+            env:
+              - name: TZ
+                value: "Asia/Bangkok"
+ ---
 apiVersion: v1
-kind: Service
-metadata:
-  name: mongo-express-service
-  namespace: crud-app-bitcoin
-spec:
-  selector:
-    app: mongo-express
-  # type: LoadBalancer
-  ports:
-    - name: mongo-express
-      port: 8081
-      protocol: TCP
-      targetPort: 8081
----
-apiVersion: v1
-kind: Deployment
+kind: Pod
 metadata:
   name: mongo-express
   namespace: crud-app-bitcoin
@@ -69,7 +54,7 @@ spec:
           value: "mongodb://root:1w2q3e4r5t6y@mongo-service.crud-app-bitcoin.svc.cluster.local:27017/"
 ---
 apiVersion: v1
-kind: Deployment
+kind: Pod
 metadata:
   name: mongo
   namespace: crud-app-bitcoin
