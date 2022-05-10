@@ -5,7 +5,7 @@ metadata:
   name: bitcoin
   namespace: crud-app-bitcoin
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: bitcoin
